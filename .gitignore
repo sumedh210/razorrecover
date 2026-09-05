@@ -41,3 +41,9 @@ test_*.py
 # OS
 .DS_Store
 Thumbs.db
+
+# Local development / training artifacts
+check_retries.py
+jsonl_shuffle.py
+ml/models/query_classifier/best_model.pt
+ml/models/query_classifier/best_model_retrieval_tuned.pt
