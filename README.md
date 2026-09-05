@@ -42,7 +42,7 @@ RazorRecover separates **reasoning** from **authorization and execution** so tha
                          │      (LLM)           │
                          └──────────┬───────────┘
                                     │
-                         diagnose + propose
+                           diagnose + propose
                                     │
                                     ▼
                          ┌──────────────────────┐

@@ -1,3 +1,4 @@
+import asyncio
 import sqlite3
 from pathlib import Path
 
@@ -5,7 +6,7 @@ from nicegui import ui
 
 
 DATABASE_PATH = Path("data/processed/merchant_tuned.db")
-REFRESH_INTERVAL = 3
+REFRESH_INTERVAL = 1.0
 
 
 # =========================================================
@@ -795,7 +796,7 @@ with ui.column().classes(
                 )
 
             ui.label(
-                "Auto-refresh: 3s"
+                "Auto-refresh: 1s"
             ).classes(
                 "text-xs text-slate-500"
             )
@@ -805,11 +806,28 @@ with ui.column().classes(
 # UPDATE DASHBOARD
 # =========================================================
 
-def update_dashboard():
+def load_dashboard_data():
+    """
+    Read the dashboard data outside NiceGUI's event loop.
 
-    metrics = get_metrics()
+    The worker can keep writing to SQLite while the dashboard reads a
+    fresh snapshot without blocking browser/UI updates.
+    """
+    return {
+        "metrics": get_metrics(),
+        "audit_metrics": get_audit_metrics(),
+        "payments": get_recent_payments(),
+        "actions": get_recent_recovery_actions(),
+        "audits": get_recent_audits(),
+    }
 
-    audit_metrics = get_audit_metrics()
+
+async def update_dashboard():
+    """Refresh the dashboard without blocking NiceGUI's event loop."""
+    data = await asyncio.to_thread(load_dashboard_data)
+
+    metrics = data["metrics"]
+    audit_metrics = data["audit_metrics"]
 
     total_label.set_text(
         f"{metrics['total_payments']:,}"
@@ -863,12 +881,9 @@ def update_dashboard():
     # Payments
     # -----------------------------------------------------
 
-    payments = get_recent_payments()
-
     payment_rows = []
 
-    for payment in payments:
-
+    for payment in data["payments"]:
         payment_rows.append(
             {
                 "payment_id": payment["payment_id"],
@@ -891,17 +906,13 @@ def update_dashboard():
     payment_table.rows = payment_rows
     payment_table.update()
 
-
     # -----------------------------------------------------
     # Recovery actions
     # -----------------------------------------------------
 
-    actions = get_recent_recovery_actions()
-
     action_rows = []
 
-    for action in actions:
-
+    for action in data["actions"]:
         action_rows.append(
             {
                 "action_id": action["action_id"],
@@ -941,44 +952,33 @@ def update_dashboard():
     # Audit activity
     # -----------------------------------------------------
 
-    audits = get_recent_audits()
-
     audit_rows = []
 
-    for audit in audits:
-
+    for audit in data["audits"]:
         audit_rows.append(
             {
                 "audit_id": audit["audit_id"],
-
                 "time": format_timestamp(
                     audit["created_at"]
                 ),
-
                 "customer": audit["customer_name"],
-
                 "amount": format_inr(
                     audit["amount"]
                 ),
-
                 "proposed": action_name(
                     audit["proposed_action"]
                 ),
-
                 "policy": action_name(
                     audit["policy_decision"]
                 ),
-
                 "executed": action_name(
                     audit["executed_action"]
                 ),
-
                 "result": (
                     "RECOVERED"
                     if audit["recovered"]
                     else audit["after_status"].upper()
                 ),
-
                 "audit": audit["compliance_status"],
             }
         )
@@ -992,14 +992,17 @@ def update_dashboard():
 
 
 # Initial update
-update_dashboard()
+ui.timer(
+    0.1,
+    update_dashboard,
+    once=True,
+)
 
 # Live refresh
 ui.timer(
     REFRESH_INTERVAL,
     update_dashboard,
 )
-
 
 ui.run(
     title="Revenue Recovery",

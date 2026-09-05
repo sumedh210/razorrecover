@@ -110,9 +110,9 @@ def choose_payment() -> str:
         return choose_payment()
 
     payment_ids = {
-        "1": "DEMO_TRANSIENT_1",
-        "2": "DEMO_AUTH_1",
-        "3": "DEMO_HIGH_VALUE_1",
+        "1": "DEMO_TRANSIENT_*",
+        "2": "DEMO_AUTH_*",
+        "3": "DEMO_HIGH_VALUE_*",
     }
 
     return payment_ids[choice]

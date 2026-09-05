@@ -8,7 +8,7 @@ DATABASE_PATH = Path("data/processed/merchant_tuned.db")
 
 DEMO_PAYMENTS = [
     {
-        "payment_id": "DEMO_TRANSIENT_1",
+        "payment_id": "DEMO_TRANSIENT_*",
         "order_id": "order_demo_transient",
         "customer_id": "cust_demo_001",
         "amount": 5500.0,
@@ -20,7 +20,7 @@ DEMO_PAYMENTS = [
         "bank": "HDFC",
     },
     {
-        "payment_id": "DEMO_AUTH_1",
+        "payment_id": "DEMO_AUTH_*",
         "order_id": "order_demo_auth",
         "customer_id": "cust_demo_002",
         "amount": 6500.0,
@@ -32,7 +32,7 @@ DEMO_PAYMENTS = [
         "bank": "ICICI",
     },
     {
-        "payment_id": "DEMO_HIGH_VALUE_1",
+        "payment_id": "DEMO_HIGH_VALUE_*",
         "order_id": "order_demo_high_value",
         "customer_id": "cust_demo_003",
         "amount": 2500000.0,
