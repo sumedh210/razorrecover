@@ -1,0 +1,43 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Configurations
+
+config/config.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Logs
+logs/
+*.log
+
+# Databases / local storage
+*.db
+*.sqlite
+*.sqlite3
+data/
+storage/
+
+# Generated artifacts
+processed_kb/
+*.npy
+*.npz
+
+# Test scripts
+tests/
+test_*.py
+*_test.py
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

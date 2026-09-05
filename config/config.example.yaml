@@ -1,0 +1,10 @@
+pinecone:
+  api_key: ${PINECONE_API_KEY}
+  index_name: razorpay-revenue-recovery
+  dimension: 2048
+  metric: cosine
+  cloud: aws
+  region: us-east-1
+
+retrieval:
+  top_k: 5

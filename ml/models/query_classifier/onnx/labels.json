@@ -1,0 +1,20 @@
+{
+  "intent": {
+    "0": "api_information",
+    "1": "invoice_management",
+    "2": "order_retrieval",
+    "3": "payment_capture",
+    "4": "payment_downtime",
+    "5": "payment_failure_diagnostics",
+    "6": "payment_retries",
+    "7": "payment_retrieval",
+    "8": "refund_management",
+    "9": "subscription_management",
+    "10": "webhook_management"
+  },
+  "retrieval_mode": {
+    "0": "lexical",
+    "1": "mixed",
+    "2": "semantic"
+  }
+}
