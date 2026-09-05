@@ -50,8 +50,9 @@ RazorRecover separates **reasoning** from **authorization and execution** so tha
                          │                      │
                          │ Query Classifier     │
                          │ BM25 / Dense         │
-                         │ RRF                   │
+                         │ RRF                  │
                          │ Cross-Encoder        │
+                         │ (reranker)           │
                          │ Knowledge Base       │
                          └──────────┬───────────┘
                                     │
@@ -67,10 +68,10 @@ RazorRecover separates **reasoning** from **authorization and execution** so tha
                          ┌──────────────────────┐
                          │     MCP Tools        │
                          │                      │
-                         │ Retry                 │
-                         │ Route                 │
-                         │ Recovery Link         │
-                         │ Escalate              │
+                         │ Retry                │
+                         │ Route                │
+                         │ Recovery Link        │
+                         │ Escalate             │
                          └──────────┬───────────┘
                                     │
                                     ▼
