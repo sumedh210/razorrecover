@@ -133,17 +133,18 @@ def audit_payment(state: AgentState) -> AgentState:
     # with a safe alternative.
     elif policy_decision not in {"STOP", "ESCALATE"}:
 
-        if executed_action != "NONE":
+        if executed_action != policy_decision:
             compliance_status = "NON_COMPLIANT"
 
             audit_reason = (
-                f"Policy blocked the proposed action and expected "
-                f"no execution, but {executed_action} was executed."
+                f"Policy selected safe replacement {policy_decision}, "
+                f"but executed action was {executed_action}."
             )
         else:
             audit_reason = (
-                f"Proposed action {proposed_action} was blocked by "
-                f"policy; safe alternative was {policy_decision}."
+                f"Proposed action {proposed_action} was blocked; "
+                f"policy selected safe alternative {policy_decision}, "
+                f"which was executed."
             )
 
     # ESCALATE is intentionally executable even when policy_allowed

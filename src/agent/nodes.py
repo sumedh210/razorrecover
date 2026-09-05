@@ -12,6 +12,7 @@ from loguru import logger
 from src.agent.state import AgentState
 from src.agent.auditor import audit_payment
 
+DATABASE_PATH = Path("data/processed/merchant_tuned.db")
 
 def load_payment_node(state: AgentState) ->AgentState:
     payment_id = state.get("payment_id")
@@ -20,13 +21,13 @@ def load_payment_node(state: AgentState) ->AgentState:
         raise RuntimeError(
             "No payment_id provided to agent.")
 
-    db_path = Path("data/processed/merchant.db")
+    # db_path = Path("data/processed/merchant_tuned.db")
         
     logger.info(
         "Loading payment | payment_id={}",
         payment_id,
     )
-    with sqlite3.connect(db_path) as connection:
+    with sqlite3.connect(DATABASE_PATH) as connection:
         connection.row_factory = sqlite3.Row
 
         row = connection.execute(
@@ -465,9 +466,9 @@ def observe_payment_node(
         payment_id,
     )
 
-    db_path = Path("data/processed/merchant.db")
+    # db_path = Path("data/processed/merchant.db")
 
-    with sqlite3.connect(db_path) as connection:
+    with sqlite3.connect(DATABASE_PATH) as connection:
         connection.row_factory = sqlite3.Row
 
         row = connection.execute(
